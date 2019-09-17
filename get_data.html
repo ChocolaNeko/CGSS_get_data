@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        #div1 {
+            border: 2px red solid;
+        }
+
+        .isObj {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div1">
+        <h3>Get one chara data</h3>
+        <hr>
+        <ul id="list">
+            
+        </ul>
+    </div>
+
+
+    <script>
+        var x = "";
+        // get full card info list
+        // $.ajax({
+        //     url: "https://starlight.kirara.ca/api/v1/list/card_t",
+        //     type: "GET",
+        //     success: function (data) {
+        //         console.log(typeof data);
+        //         x = data;
+        //         console.log(x);
+        //         console.log(data.result[0]);
+        //     }
+        // });
+
+        // get one chara info 
+        $.ajax({
+            url: "https://starlight.kirara.ca/api/v1/card_t/100015",
+            type: "GET",
+            success: function (data) {
+                for (var key in data.result[0]) {
+                    console.log(key + " => " + data.result[0][key]);
+                    // console.log(typeof data.result[0][key]);
+                    if (typeof (data.result[0][key]) == "object" && data.result[0][key] != null &&
+                        data.result[0][key] != "") {
+                        $("#list").append("<li class='isObj'>" + key + ": " + data.result[0][key] +
+                            "</li>");
+                        $("#list").append("<ul class='inner'>");
+                        for(var innerKey in data.result[0][key]) {
+                            // console.log("----- " + innerKey + " => " + data.result[0][key][innerKey]);
+                            $(".inner").append("<li>" + innerKey + ": " + data.result[0][key][innerKey] + "</li>");
+                        }
+                        $("#list").append("</ul>");
+                    } else {
+                        $("#list").append("<li>" + key + ": " + data.result[0][key] + "</li>");
+                    }
+
+                }
+            }
+        });
+
+        // var x = 0;
+        // x = axios.get("https://starlight.kirara.ca/api/v1/list/card_t")
+        //     .then(function (response) {
+        //         x = JSON.parse(response);
+        //     })
+        // console.log(x);
+
+        // function reqListener() {
+        //     console.log(this.responseText);
+        // }
+
+        // var oReq = new XMLHttpRequest();
+        // oReq.addEventListener("load", reqListener);
+        // oReq.open("GET", "https://starlight.kirara.ca/api/v1/list/card_t");
+        // oReq.send();
+    </script>
+</body>
+
+</html>
